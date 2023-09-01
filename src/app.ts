@@ -2,9 +2,9 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
 import httpStatus from 'http-status';
-import router from '../app/routes';
-import config from '../config';
 import GlobalErrorHandler from './app/middleware/globalErrorHandler';
+import router from './app/routes';
+import config from './config';
 
 const app: Application = express();
 app.use(express.json());
