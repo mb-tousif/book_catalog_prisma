@@ -5,7 +5,17 @@ import config from '../../config';
 import ApiError from '../../errors/ApiError';
 import { jwtHelpers } from '../../helpers/jwtHelpers';
 
-const auth =
+import { JwtPayload } from 'jsonwebtoken';
+
+declare global {
+  namespace Express {
+    interface Request {
+      user: JwtPayload | null;
+    }
+  }
+}
+
+const Auth =
   (...requiredRoles: string[]) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -19,9 +29,8 @@ const auth =
 
       verifiedUser = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
 
-      req.user = verifiedUser; // role  , userid
-
-      // role diye guard korar jnno
+      req.user = verifiedUser; 
+      
       if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
         throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
       }
@@ -31,4 +40,4 @@ const auth =
     }
   };
 
-export default auth;
+export default Auth;
