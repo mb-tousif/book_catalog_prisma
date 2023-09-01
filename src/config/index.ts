@@ -11,8 +11,6 @@ export default {
   app_name: process.env.APP_NAME,
   jwt: {
     secret: process.env.JWT_SECRET,
-    refresh_secret: process.env.JWT_REFRESH_SECRET,
-    expires_in: process.env.JWT_EXPIRES_IN,
-    refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
+    expires_in: process.env.JWT_EXPIRES_IN
   },
 };

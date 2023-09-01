@@ -9,5 +9,10 @@ router.post('/signup',
     ValidateRequest(authValidation.signupValidation),
     authController.signupUser
 );
+router.post(
+  '/signin',
+  ValidateRequest(authValidation.loginValidation),
+  authController.loginUser
+);
 
 export const authRoutes = router;
