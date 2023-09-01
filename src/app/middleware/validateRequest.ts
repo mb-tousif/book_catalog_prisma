@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AnyZodObject, ZodEffects } from 'zod';
 
-const validateRequest =
+const ValidateRequest =
   (schema: AnyZodObject | ZodEffects<AnyZodObject>) =>
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -17,4 +17,4 @@ const validateRequest =
     }
   };
 
-export default validateRequest;
+export default ValidateRequest;
