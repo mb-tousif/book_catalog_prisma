@@ -3,13 +3,13 @@ import config from '../config';
 
 const hashPassword = async (password: string): Promise<string> => {
     const salt = Number(config.salt_rounds);
-    return bcrypt.hash(password, salt);
+    const encryptedPassword= await bcrypt.hash(password, salt);
+    return encryptedPassword;
 }
 
-
-
 const comparePassword = async (password: string, hash: string): Promise<boolean> => {
-    return bcrypt.compare(password, hash);
+    const decryptedPassword = await bcrypt.compare(password, hash);
+    return decryptedPassword;
 }
 
 export const hashPasswordHelper = {
