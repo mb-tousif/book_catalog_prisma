@@ -5,7 +5,7 @@ import prisma from "../../../shared/prisma";
 
 const getAllCategories = async (): Promise<Category[]> => {
     const categories = await prisma.category.findMany({});
-    if (categories.length >= 0) {
+    if (categories.length <= 0) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Categories not found');
     }
     return categories;

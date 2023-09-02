@@ -1,4 +1,3 @@
-
 import express from 'express';
 import ValidateRequest from '../../middleware/validateRequest';
 import { authController } from './auth.controller';
