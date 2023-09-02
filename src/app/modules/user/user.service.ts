@@ -1,11 +1,12 @@
 import { User } from "@prisma/client";
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
+import { hashPasswordHelper } from "../../../helpers/hashPassword";
 import prisma from "../../../shared/prisma";
 
 // Get all users service
-const getAllUsers = (): Promise<Partial<User>[]> => {
-  const users = prisma.user.findMany({
+const getAllUsers =async (): Promise<Partial<User>[]> => {
+  const users = await prisma.user.findMany({
     select: {
       id: true,
       email: true,
@@ -24,8 +25,8 @@ const getAllUsers = (): Promise<Partial<User>[]> => {
 };
 
 // Get user by id service
-const getUserById = (userId: string): Promise<Partial<User> | null> => {
-  const user = prisma.user.findUnique({
+const getUserById = async (userId: string): Promise<Partial<User> | null> => {
+  const user = await prisma.user.findUnique({
     where: {
       id: userId,
     },
@@ -42,19 +43,26 @@ const getUserById = (userId: string): Promise<Partial<User> | null> => {
   return user;
 };
 
-const updateUserById = (userId: string, payload: Partial<User>): Promise<Partial<User>> => {
+const updateUserById = async (userId: string, payload: Partial<User>): Promise<Partial<User>> => {
   //  handle duplicate user data in existing user table by email
-  const isExist = prisma.user.findFirst({
-    where: {
-      email: payload.email,
-    },
-  });
-
-  if (!isExist) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      'New data may be duplicate with existing user data'
-    );
+  console.log(payload);
+  
+  if (payload.email && payload.email.length > 0) {
+   const isExist = await prisma.user.findFirst({
+     where: {
+       email: payload.email,
+     },
+   });
+   if (isExist) {
+     throw new ApiError(
+       httpStatus.BAD_REQUEST,
+       'New data may be duplicate with existing user data'
+     );
+   }
+  }
+  // handle update password with hash
+  if (payload.password && payload.password.length > 0) {
+    payload.password = await hashPasswordHelper.hashPassword(payload.password);
   }
   const user = prisma.user.update({
     where: {
