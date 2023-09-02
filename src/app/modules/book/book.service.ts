@@ -63,7 +63,7 @@ const getAllBooks = async (queryPayload: TQueryParams) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Books not found');
   }
   const total = await prisma.book.count({
-    where: query.where
+    where: query.where,
   });
   const totalPages = Math.ceil(total / Number(limit));
   return {
@@ -75,6 +75,30 @@ const getAllBooks = async (queryPayload: TQueryParams) => {
     },
     data: books,
   };
+};
+
+const getBookByCategoryId = async (id: string): Promise<Book> => {
+  const book = await prisma.book.findFirst({
+    where: {
+      categoryId: id,
+    },
+  });
+  if (!book) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Book not found');
+  }
+  return book;
+};
+
+const getBookById = async (id: string): Promise<Book> => {
+  const book = await prisma.book.findUnique({
+    where: {
+      id,
+    },
+  });
+  if (!book) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Book not found');
+  }
+  return book;
 };
 
 const createBook = async (payload: Book): Promise<Book> => {
@@ -95,7 +119,44 @@ const createBook = async (payload: Book): Promise<Book> => {
   return book;
 };
 
+const updateBookById = async (id: string, payload: Book): Promise<Book> => {
+  const isExist = await prisma.book.findFirst({
+    where: {
+      title: payload.title,
+    },
+  });
+  if (isExist) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Book already exist');
+  }
+  const book = await prisma.book.update({
+    where: {
+      id,
+    },
+    data: payload,
+    include: {
+      category: true,
+    },
+  });
+  return book;
+};
+
+const deleteBookById = async (id: string): Promise<Book> => {
+  const book = await prisma.book.delete({
+    where: {
+      id,
+    },
+    include: {
+      category: true,
+    },
+  });
+  return book;
+};
+
 export const BookService = {
-  createBook,
   getAllBooks,
+  getBookByCategoryId,
+  getBookById,
+  createBook,
+  updateBookById,
+  deleteBookById,
 };
