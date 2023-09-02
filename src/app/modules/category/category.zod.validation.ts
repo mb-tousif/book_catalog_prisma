@@ -1,19 +1,14 @@
 
 import { z } from "zod";
 
-const postValidation = z.object({
+const zodValidation = z.object({
     body: z.object({
-
+        title: z.string({
+            required_error: 'Title is required'
+        }).min(3).max(255),
     })
 });
 
-const updateValidation = z.object({
-    body: z.object({
-
-    })
-});
-
-export const categoryValidation = {
-    postValidation,
-    updateValidation
+export const CategoryValidation = {
+    zodValidation
 }
