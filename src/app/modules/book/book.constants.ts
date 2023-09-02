@@ -1,2 +1,3 @@
+export const bookFilterableFields: string[] = [ "search", "minPrice", "maxPrice", "category" ];
 
-// Define your constants here
+export const bookSearchableFields: string[] = [ "title", "author", "genre"];
