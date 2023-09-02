@@ -20,25 +20,25 @@ enum OrderStatus {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(customer)
-  contactNo   String
-  address   String
-  profileImg   String @default("https://i.imgur.com/HeIi0wU.png")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                String            @id @default(uuid())
+  name              String
+  email             String            @unique
+  password          String
+  role              Role              @default(customer)
+  contactNo         String
+  address           String
+  profileImg        String            @default("https://i.imgur.com/HeIi0wU.png")
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
   reviewsAndRatings ReviewAndRating[]
-  orders Order[]
+  orders            Order[]
 
   @@map("users")
 }
 
 model Category {
   id        String   @id @default(uuid())
-  title      String
+  title     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   books     Book[]
@@ -47,18 +47,18 @@ model Category {
 }
 
 model Book {
-  id        String   @id @default(uuid())
-  title      String
-  author     String
-  price      Float
-  genre      String
+  id              String   @id @default(uuid())
+  title           String
+  author          String
+  price           Float
+  genre           String
   publicationDate String
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  category        Category @relation(fields: [categoryId], references: [id])
+  categoryId      String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  orders OrderedBook[]
+  orders            OrderedBook[]
   reviewsAndRatings ReviewAndRating[]
 
   @@map("books")
@@ -66,12 +66,12 @@ model Book {
 
 model ReviewAndRating {
   id        String   @id @default(uuid())
-  review      String
-  rating      Int
-  user   User @relation(fields: [userId], references: [id])
-  userId String
-  book   Book @relation(fields: [bookId], references: [id])
-  bookId String
+  review    String
+  rating    Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  book      Book     @relation(fields: [bookId], references: [id])
+  bookId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -79,12 +79,12 @@ model ReviewAndRating {
 }
 
 model Order {
-  id        String   @id @default(uuid())
-  userId String
-  user   User @relation(fields: [userId], references: [id])
-  status OrderStatus @default(pending)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String        @id @default(uuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
+  status       OrderStatus   @default(pending)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   orderedBooks OrderedBook[]
 
   @@map("orders")
@@ -92,10 +92,11 @@ model Order {
 
 model OrderedBook {
   id        String   @id @default(uuid())
-  orderId String
-  order   Order @relation(fields: [orderId], references: [id])
-  bookId String
-  book   Book @relation(fields: [bookId], references: [id])
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  bookId    String
+  book      Book     @relation(fields: [bookId], references: [id])
+  quantity  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

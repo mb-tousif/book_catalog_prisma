@@ -1,7 +1,3 @@
-export type IBookSearchTerm = {
-  search?: string;
-};
-
 export type TQueryParams = {
   page?: number;
   limit?: number;
