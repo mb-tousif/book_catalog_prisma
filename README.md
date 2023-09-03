@@ -46,3 +46,10 @@ This is a backend for a book catalog application. It is built to implement CRUD 
 - api/v1/orders/create-order (POST)
 - api/v1/orders (GET) 
 - [Bonus] api/v1/orders/:orderId (GET)
+
+
+## ERD Of The Database
+
+<p>
+<img src="./ERD.png" align="center" width="100%" height="100%" style="border-radius: 30px;">
+</p>
