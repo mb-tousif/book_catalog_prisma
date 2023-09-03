@@ -6,6 +6,34 @@ import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import prisma from '../../../shared/prisma';
 import { TOrder } from './orderedBook.interface';
 
+// Get: getOrders - get all orders for Admin and Customer who made the order 
+const getAllOrders = async (token:string):Promise<Order[] | undefined> => {
+    const decodedToken = jwtHelpers.verifyToken(
+        token,
+        process.env.JWT_SECRET as string
+    );
+
+    if (decodedToken.role === "customer") {
+        const orders = await prisma.order.findMany({
+            where: {
+                userId: decodedToken.userId,
+            },
+            include: {
+                orderedBooks: true,
+            },
+        });
+        return orders;
+    }else if (decodedToken.role === "admin") {
+        const orders = await prisma.order.findMany({
+            include: {
+                orderedBooks: true,
+            },
+        });
+        return orders;
+    }
+};
+
+// Post: createOrder - create an order for a user
 const createOrder = async (token: string, payload: TOrder):Promise<Order> => {
   const decodedToken = jwtHelpers.verifyToken(
     token,
@@ -54,5 +82,6 @@ const createOrder = async (token: string, payload: TOrder):Promise<Order> => {
 };
 
 export const OrderService = {
-  createOrder,
+    getAllOrders,
+    createOrder,
 };
