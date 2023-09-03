@@ -10,18 +10,19 @@ This is a backend for a book catalog application. It is built to implement CRUD 
 - [x] JWT
 - [x] Bcrypt
 
-### This is a link to the backend API hosted on vercel [Live Site]()
+### This is a link to the backend API hosted on vercel [Live Site](https://deploy-virid-one.vercel.app/)
 
 ### Application Routes:
 
 #### User
 
 - api/v1/auth/signup (POST)
+- api/v1/auth/signin (POST)
 - api/v1/users (GET)
 - api/v1/users/6177a5b87d32123f08d2f5d4 (Single GET) Include an id that is saved in your database
 - api/v1/users/6177a5b87d32123f08d2f5d4 (PATCH)
 - api/v1/users/6177a5b87d32123f08d2f5d4 (DELETE) Include an id that is saved in your database
-- api/v1/profile (GET)
+- [Bonus] api/v1/profile (GET)
 
 ### Category
 
@@ -44,4 +45,4 @@ This is a backend for a book catalog application. It is built to implement CRUD 
 
 - api/v1/orders/create-order (POST)
 - api/v1/orders (GET) 
-- api/v1/orders/:orderId (GET)
+- [Bonus] api/v1/orders/:orderId (GET)
