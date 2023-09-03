@@ -2,7 +2,15 @@
 ## Description
 This is a backend for a book catalog application. It is built to implement CRUD operations, pagination and filtering using Prisma, Postgres and Express. It is built with express.js and Typescript.
 
-### Live Link: https://example.com
+## Technologies Used
+- [x] Express.js
+- [x] Typescript
+- [x] Prisma
+- [x] Postgres
+- [x] JWT
+- [x] Bcrypt
+
+### This is a link to the backend API hosted on vercel [Live Site]()
 
 ### Application Routes:
 
