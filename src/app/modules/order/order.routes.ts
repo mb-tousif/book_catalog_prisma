@@ -6,6 +6,7 @@ import { OrderController } from './order.controller';
 const router = express.Router();
 
 router.get('/', Auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CUSTOMER), OrderController.getAllOrders);
+router.get('/:id', Auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CUSTOMER), OrderController.getOrderById);
 router.post(
   '/create-order',
   Auth(ENUM_USER_ROLE.CUSTOMER),

@@ -13,25 +13,60 @@ const getAllOrders = async (token:string):Promise<Order[] | undefined> => {
         process.env.JWT_SECRET as string
     );
 
-    if (decodedToken.role === "customer") {
-        const orders = await prisma.order.findMany({
-            where: {
-                userId: decodedToken.userId,
-            },
-            include: {
-                orderedBooks: true,
-            },
-        });
-        return orders;
-    }else if (decodedToken.role === "admin") {
-        const orders = await prisma.order.findMany({
-            include: {
-                orderedBooks: true,
-            },
-        });
-        return orders;
+    if (decodedToken.role === 'admin') {
+      const result = await prisma.order.findMany({
+        include: {
+          orderedBooks: true,
+        },
+      });
+      return result;
+    }
+    if (decodedToken.role === 'customer') {
+      const result = await prisma.order.findMany({
+        where: { userId: decodedToken.userId },
+        include: {
+          orderedBooks: true,
+        },
+      });
+
+      return result;
     }
 };
+
+// Get: get order by id - get order by id for specific customer and admin
+const getOrderById = async (token:string, orderId: string):Promise<Order | undefined> => {
+    const isExist = await prisma.order.findFirst({
+        where: {
+            id: orderId,
+        },
+    });
+    if (!isExist) {
+        throw new ApiError(httpStatus.NOT_FOUND, "Order not found");
+    }
+    const decodedToken = await jwtHelpers.verifyToken(
+        token,
+        process.env.JWT_SECRET as string
+    );
+   if (decodedToken.role === 'admin') {
+     const result = await prisma.order.findMany({
+      include: {
+        orderedBooks: true,
+      },
+     });
+     return result as any;
+   }
+   if (decodedToken.role === 'customer') {
+     const result = await prisma.order.findMany({ 
+      where: { id:orderId, userId:decodedToken.userId },
+      include: {
+        orderedBooks: true,
+      }, 
+    });
+
+     return result as any;
+   }
+};
+
 
 // Post: createOrder - create an order for a user
 const createOrder = async (token: string, payload: TOrder):Promise<Order> => {
@@ -83,5 +118,6 @@ const createOrder = async (token: string, payload: TOrder):Promise<Order> => {
 
 export const OrderService = {
     getAllOrders,
+    getOrderById,
     createOrder,
 };
